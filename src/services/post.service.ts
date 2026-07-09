@@ -77,4 +77,14 @@ export const postService = {
 
     return post;
   },
+
+  async getPostById(id: string) {
+    const post = await Post.findById(id);
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    return post;
+  },
 };

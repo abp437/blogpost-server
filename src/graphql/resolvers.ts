@@ -14,6 +14,10 @@ export const resolvers = {
 
       return postService.getPostsByAuthor(context.user.id);
     },
+
+    post: async (_parent: unknown, args: { id: string }) => {
+      return postService.getPostById(args.id);
+    },
   },
 
   Mutation: {
