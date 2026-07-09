@@ -17,7 +17,7 @@ export const postService = {
     const post = await Post.create({
       title: data.title,
       content: data.content,
-      userId: data.userId,
+      author: data.userId,
     });
 
     return post;
