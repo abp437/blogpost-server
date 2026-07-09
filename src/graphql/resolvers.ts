@@ -35,6 +35,44 @@ export const resolvers = {
         userId: context.user.id,
       });
     },
+
+    updatePost: async (
+      _parent: unknown,
+      args: {
+        id: string;
+        title: string;
+        content: string;
+      },
+      context: GraphQLContext,
+    ) => {
+      if (!context.user) {
+        throw new Error("Unauthorized");
+      }
+
+      return postService.updatePost({
+        id: args.id,
+        title: args.title,
+        content: args.content,
+        userId: context.user.id,
+      });
+    },
+
+    deletePost: async (
+      _parent: unknown,
+      args: {
+        id: string;
+      },
+      context: GraphQLContext,
+    ) => {
+      if (!context.user) {
+        throw new Error("Unauthorized");
+      }
+
+      return postService.deletePost({
+        id: args.id,
+        userId: context.user.id,
+      });
+    },
   },
 
   Post: {

@@ -18,6 +18,16 @@ type Mutation {
     title: String!
     content: String!
   ): Post!
+
+  updatePost(
+    id: ID!
+    title: String!
+    content: String!
+  ): Post!
+
+  deletePost(
+    id: ID!
+  ): Post!
 }
 
 `;
