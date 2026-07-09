@@ -6,6 +6,14 @@ export const resolvers = {
     posts: async (_parent: unknown, _args: unknown, _context: GraphQLContext) => {
       return postService.getPosts();
     },
+
+    myPosts: async (_parent: unknown, _args: unknown, context: GraphQLContext) => {
+      if (!context.user) {
+        throw new Error("Unauthorized");
+      }
+
+      return postService.getPostsByAuthor(context.user.id);
+    },
   },
 
   Mutation: {

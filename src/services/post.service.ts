@@ -22,4 +22,8 @@ export const postService = {
 
     return post;
   },
+
+  async getPostsByAuthor(userId: string) {
+    return Post.find({ author: userId }).sort({ createdAt: -1 });
+  },
 };
