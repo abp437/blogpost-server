@@ -3,11 +3,7 @@ import type { GraphQLContext } from "./context.js";
 
 export const resolvers = {
   Query: {
-    posts: async (
-      _parent: unknown,
-      _args: unknown,
-      _context: GraphQLContext,
-    ) => {
+    posts: async (_parent: unknown, _args: unknown, _context: GraphQLContext) => {
       return postService.getPosts();
     },
   },
@@ -35,5 +31,7 @@ export const resolvers = {
 
   Post: {
     id: (parent: any) => parent._id.toString(),
+    createdAt: (parent: any) => parent.createdAt.toISOString(),
+    updatedAt: (parent: any) => parent.updatedAt.toISOString(),
   },
 };
