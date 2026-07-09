@@ -1,2 +1,6 @@
+# Dist and Node modules
 node_modules
 dist
+
+# Env file
+.env
