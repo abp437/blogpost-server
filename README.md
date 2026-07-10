@@ -6,6 +6,10 @@ The application provides a hybrid API architecture with both **REST** and **Grap
 
 ---
 
+https://github.com/user-attachments/assets/7be779bc-1352-4773-aff8-785b898d82ef
+
+---
+
 # Architecture Overview
 
 This application contains both a **REST API** and a **GraphQL API**.
