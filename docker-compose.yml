@@ -1,5 +1,4 @@
 services:
-
   server:
     build:
       context: .
@@ -8,26 +7,24 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    environment:
-      NODE_ENV: production
-      PORT: 3000
-      MONGO_URL: mongodb://mongodb:27017/blogpost
-      CLIENT_URL: http://localhost:5173
-      JWT_SECRET: access-secret
-      JWT_REFRESH_SECRET: refresh-secret
-      ACCESS_TOKEN_EXPIRES_IN: 15m
-      REFRESH_TOKEN_EXPIRES_IN: 7d
+    env_file:
+      - .env
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
 
   mongodb:
     image: mongo:8
     container_name: blogpost-mongodb
     restart: unless-stopped
-    ports:
-      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
 volumes:
   mongodb_data:
