@@ -18,11 +18,18 @@ interface DeletePostInput {
   userId: string;
 }
 
+const postPopulate = {
+  path: "author",
+  select: "name email",
+};
+
 export const postService = {
   async getPosts() {
-    return Post.find().sort({
-      createdAt: -1,
-    });
+    return Post.find()
+      .populate(postPopulate)
+      .sort({
+        createdAt: -1,
+      });
   },
 
   async createPost(data: CreatePostInput) {
@@ -32,15 +39,17 @@ export const postService = {
       author: data.userId,
     });
 
-    return post;
+    return post.populate(postPopulate);
   },
 
   async getPostsByAuthor(userId: string) {
     return Post.find({
       author: userId,
-    }).sort({
-      createdAt: -1,
-    });
+    })
+      .populate(postPopulate)
+      .sort({
+        createdAt: -1,
+      });
   },
 
   async updatePost(data: UpdatePostInput) {
@@ -56,7 +65,7 @@ export const postService = {
       {
         new: true,
       },
-    );
+    ).populate(postPopulate);
 
     if (!post) {
       throw new Error("Post not found");
@@ -69,7 +78,7 @@ export const postService = {
     const post = await Post.findOneAndDelete({
       _id: data.id,
       author: data.userId,
-    });
+    }).populate(postPopulate);
 
     if (!post) {
       throw new Error("Post not found");
@@ -79,7 +88,9 @@ export const postService = {
   },
 
   async getPostById(id: string) {
-    const post = await Post.findById(id);
+    const post = await Post.findById(id).populate(
+      postPopulate,
+    );
 
     if (!post) {
       throw new Error("Post not found");
