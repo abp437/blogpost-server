@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { authService } from "../services/auth.service.js";
-import { env } from "../config/env.js";
+import { refreshTokenCookieOptions } from "../config/cookie.js";
 
 export async function register(req: Request, res: Response) {
   try {
@@ -32,12 +32,7 @@ export async function login(req: Request, res: Response) {
       password,
     });
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
     res.status(200).json({
       message: "Login successful",
@@ -63,16 +58,10 @@ export async function refresh(req: Request, res: Response) {
       return;
     }
 
-    const { accessToken, newRefreshToken } =
-      await authService.refresh(refreshToken);
+    const { accessToken, newRefreshToken } = await authService.refresh(refreshToken);
 
     if (newRefreshToken) {
-      res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        secure: env.NODE_ENV === "production",
-        sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
+      res.cookie("refreshToken", newRefreshToken, refreshTokenCookieOptions);
     }
 
     res.status(200).json({
