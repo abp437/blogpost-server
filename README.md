@@ -2,13 +2,13 @@
 
 A backend for the **BlogPost** application built with **Express**, **Apollo Server**, **GraphQL**, **MongoDB**, and **JWT authentication**.
 
-The application provides a hybrid API architecture with both **REST** and **GraphQL** endpoints.
+The application provides a hybrid API architecture with both **REST** and **GraphQL** endpoints running on the same Express server.
 
 ---
 
 # Architecture Overview
 
-This application contains both a **REST API** and a **GraphQL API** running on the same Express server.
+This application contains both a **REST API** and a **GraphQL API**.
 
 ## REST API
 
@@ -16,7 +16,8 @@ The REST API is responsible for:
 
 * User registration
 * User authentication
-* JWT-based authentication flows
+* JWT authentication flows
+* Refresh token handling
 
 Authentication-related routes are implemented using REST controllers.
 
@@ -24,7 +25,7 @@ Authentication-related routes are implemented using REST controllers.
 
 ## GraphQL API
 
-The GraphQL API is mounted directly on the Express server using Apollo Server.
+The GraphQL API is mounted directly on Express using Apollo Server.
 
 GraphQL is available at:
 
@@ -72,9 +73,11 @@ src/
 └── index.ts
 ```
 
-## Application Layers
+---
 
-### Controllers
+# Application Layers
+
+## Controllers
 
 Controllers handle REST API requests and responses.
 
@@ -86,7 +89,7 @@ Responsibilities:
 
 ---
 
-### Queries & Mutations
+## Queries & Mutations
 
 GraphQL operations are separated into:
 
@@ -101,7 +104,7 @@ Responsibilities:
 
 ---
 
-### Services
+## Services
 
 Services contain the core business logic.
 
@@ -142,7 +145,7 @@ The current structure keeps the codebase simple while maintaining separation bet
 
 ---
 
-# Recommended: Run with Docker
+# Recommended: Run with Docker in Production Mode
 
 Docker Compose is the recommended way to run this application.
 
@@ -151,7 +154,11 @@ It starts:
 * Node.js server
 * MongoDB database
 
-with the required configuration.
+with the required production configuration.
+
+Using Docker ensures the application runs in a consistent environment.
+
+---
 
 ## Prerequisites
 
@@ -166,7 +173,7 @@ Install:
 
 The repository contains a `.env.example` file.
 
-Create your local environment file:
+Create your production environment file:
 
 ```bash
 cp .env.example .env
@@ -180,9 +187,13 @@ When running with Docker, MongoDB should use the Docker service hostname:
 MONGO_URL=mongodb://mongodb:27017/blogpost
 ```
 
+Do not use `localhost` for MongoDB when running inside Docker.
+
 ---
 
-## 2. Start the application
+## 2. Build and start the application
+
+Build the production image and start the containers:
 
 ```bash
 docker compose up --build
@@ -196,7 +207,7 @@ docker compose up -d --build
 
 ---
 
-## Endpoints
+## 3. Verify the application
 
 REST API:
 
@@ -212,32 +223,86 @@ http://localhost:3000/graphql
 
 ---
 
-# Local Development
+# Docker Commands
 
-Docker is the recommended approach, but the application can also be run locally.
+View logs:
 
-Install dependencies:
+```bash
+docker compose logs -f
+```
+
+View server logs only:
+
+```bash
+docker compose logs -f server
+```
+
+Stop containers:
+
+```bash
+docker compose down
+```
+
+Stop containers and remove database volume:
+
+```bash
+docker compose down -v
+```
+
+> Warning: Removing volumes permanently deletes MongoDB data.
+
+---
+
+# Local Development (Optional)
+
+Docker production mode is the recommended approach, but the application can also be run locally for development.
+
+---
+
+## Install dependencies
 
 ```bash
 npm install
 ```
 
-Create environment file:
+---
+
+## Configure environment
+
+Create your environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-Update MongoDB URL for local development:
+For local MongoDB:
 
 ```env
 MONGO_URL=mongodb://localhost:27017/blogpost
 ```
 
-Run development server:
+---
+
+## Run development server
 
 ```bash
 npm run dev
+```
+
+---
+
+## Run production build locally
+
+Build:
+
+```bash
+npm run build
+```
+
+Start:
+
+```bash
+npm start
 ```
 
 ---
