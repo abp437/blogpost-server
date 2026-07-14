@@ -1,6 +1,17 @@
 import { postService } from "../services/post.service.js";
 import type { GraphQLContext } from "./context.js";
 
+interface AddPostInput {
+  title: string;
+  content: string;
+}
+
+interface UpdatePostInput {
+  id: string;
+  title: string;
+  content: string;
+}
+
 export const resolvers = {
   Query: {
     posts: async (_parent: unknown, _args: unknown, _context: GraphQLContext) => {
@@ -21,18 +32,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    addPost: async (
-      _parent: unknown,
-      {
-        input,
-      }: {
-        input: {
-          title: string;
-          content: string;
-        };
-      },
-      context: GraphQLContext,
-    ) => {
+    addPost: async (_parent: unknown, { input }: { input: AddPostInput }, context: GraphQLContext) => {
       if (!context.user) {
         throw new Error("Unauthorized");
       }
@@ -43,19 +43,7 @@ export const resolvers = {
       });
     },
 
-    updatePost: async (
-      _parent: unknown,
-      {
-        input,
-      }: {
-        input: {
-          id: string;
-          title: string;
-          content: string;
-        };
-      },
-      context: GraphQLContext,
-    ) => {
+    updatePost: async (_parent: unknown, { input }: { input: UpdatePostInput }, context: GraphQLContext) => {
       if (!context.user) {
         throw new Error("Unauthorized");
       }
