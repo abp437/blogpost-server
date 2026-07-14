@@ -9,6 +9,7 @@ type User {
 type Post {
   id: ID!
   title: String!
+  description: String
   content: String!
   createdAt: String!
   updatedAt: String!
@@ -23,12 +24,14 @@ type Query {
 
 input AddPostInput {
   title: String!
+  description: String
   content: String!
 }
 
 input UpdatePostInput {
   id: ID!
   title: String!
+  description: String
   content: String!
 }
 

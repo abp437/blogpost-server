@@ -1,22 +1,5 @@
 import Post from "../models/Post.js";
-
-interface CreatePostInput {
-  title: string;
-  content: string;
-  userId: string;
-}
-
-interface UpdatePostInput {
-  id: string;
-  title: string;
-  content: string;
-  userId: string;
-}
-
-interface DeletePostInput {
-  id: string;
-  userId: string;
-}
+import { CreatePostInput, UpdatePostInput, DeletePostInput } from "../types/post.js";
 
 const postPopulate = {
   path: "author",
@@ -35,6 +18,7 @@ export const postService = {
   async createPost(data: CreatePostInput) {
     const post = await Post.create({
       title: data.title,
+      description: data.description,
       content: data.content,
       author: data.userId,
     });
@@ -60,6 +44,7 @@ export const postService = {
       },
       {
         title: data.title,
+        description: data.description,
         content: data.content,
       },
       {
