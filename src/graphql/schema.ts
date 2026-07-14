@@ -21,18 +21,20 @@ type Query {
   post(id: ID!): Post!
 }
 
+input AddPostInput {
+  title: String!
+  content: String!
+}
+
+input UpdatePostInput {
+  id: ID!
+  title: String!
+  content: String!
+}
+
 type Mutation {
-  addPost(
-    title: String!
-    content: String!
-  ): Post!
-
-  updatePost(
-    id: ID!
-    title: String!
-    content: String!
-  ): Post!
-
+  addPost(input: AddPostInput!): Post!
+  updatePost(input: UpdatePostInput!): Post!
   deletePost(
     id: ID!
   ): Post!

@@ -23,9 +23,13 @@ export const resolvers = {
   Mutation: {
     addPost: async (
       _parent: unknown,
-      args: {
-        title: string;
-        content: string;
+      {
+        input,
+      }: {
+        input: {
+          title: string;
+          content: string;
+        };
       },
       context: GraphQLContext,
     ) => {
@@ -34,18 +38,21 @@ export const resolvers = {
       }
 
       return postService.createPost({
-        title: args.title,
-        content: args.content,
+        ...input,
         userId: context.user.id,
       });
     },
 
     updatePost: async (
       _parent: unknown,
-      args: {
-        id: string;
-        title: string;
-        content: string;
+      {
+        input,
+      }: {
+        input: {
+          id: string;
+          title: string;
+          content: string;
+        };
       },
       context: GraphQLContext,
     ) => {
@@ -54,9 +61,7 @@ export const resolvers = {
       }
 
       return postService.updatePost({
-        id: args.id,
-        title: args.title,
-        content: args.content,
+        ...input,
         userId: context.user.id,
       });
     },
